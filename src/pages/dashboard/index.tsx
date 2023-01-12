@@ -1,10 +1,8 @@
 "use client";
 import { NextPage } from "next";
 import { useSession, signOut, signIn } from "next-auth/react";
-import { trpc } from "../../utils/trpc";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import Image from 'next/image'
 
 
 const Home: NextPage = () => {
@@ -28,12 +26,12 @@ const Home: NextPage = () => {
           </h1>
         </div>
         <img className="rounded-full h-12 m-3" src={sessionData?.user?.image} alt="profile photo" />
-         <button
-        className="rounded-full bg-black/10 px-10 py-3 m-4 font-semibold text-black no-underline transition hover:bg-black/20"
-        onClick={sessionData ? () => void signOut() : () => void signIn()}
-      >
-        {sessionData ? "Sign out" : "Sign in"}
-      </button>
+        <button
+          className="rounded-full bg-black/10 px-10 py-3 m-4 font-semibold text-black no-underline transition hover:bg-black/20"
+          onClick={sessionData ? () => void signOut() : () => void signIn()}
+        >
+          {sessionData ? "Sign out" : "Sign in"}
+        </button>
       </header>
       <main>
         <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
