@@ -3,6 +3,8 @@ import { NextPage } from "next";
 import { useSession, signOut, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+// import Image from 'next/image'
+
 
 
 const Home: NextPage = () => {
@@ -25,7 +27,12 @@ const Home: NextPage = () => {
             Dashboard
           </h1>
         </div>
-        <img className="rounded-full h-12 m-3" src={sessionData?.user?.image} alt="profile photo" />
+        {/* <Image
+          src={sessionData?.user?.image}
+          alt="Profile picture"
+          width={800}
+          height={500}
+        /> */}
         <button
           className="rounded-full bg-black/10 px-10 py-3 m-4 font-semibold text-black no-underline transition hover:bg-black/20"
           onClick={sessionData ? () => void signOut() : () => void signIn()}
