@@ -1,16 +1,17 @@
-"use client";
-import { NextPage } from "next";
+import SubmitForm from "./../../components/SubmitForm";
+("use client");
+import type { NextPage } from "next";
 import { useSession, signOut, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { FormEvent, useEffect, useState } from "react";
+import Navbar from "../../components/shared/Navbar";
 // import Image from 'next/image'
-
-
 
 const Home: NextPage = () => {
   const { data: sessionData } = useSession();
-  console.log(sessionData);
   const router = useRouter();
+  const [inputValue, setInputValue] = useState("");
+  const [url, setUrl] = useState("");
 
   useEffect(() => {
     if (!sessionData) {
@@ -19,33 +20,27 @@ const Home: NextPage = () => {
     }
   }, [sessionData, router]);
 
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setUrl(inputValue);
+    console.log(url);
+  };
+
   return (
     <>
-      <header className="bg-white shadow grid grid-flow-col auto-cols-max place-content-between h-30">
-        <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-            Dashboard
-          </h1>
-        </div>
-        {/* <Image
-          src={sessionData?.user?.image}
-          alt="Profile picture"
-          width={800}
-          height={500}
-        /> */}
-        <button
-          className="rounded-full bg-black/10 px-10 py-3 m-4 font-semibold text-black no-underline transition hover:bg-black/20"
-          onClick={sessionData ? () => void signOut() : () => void signIn()}
-        >
-          {sessionData ? "Sign out" : "Sign in"}
-        </button>
-      </header>
+      <Navbar />
       <main>
-        <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+        <div className="h-[calc(100% - h-16)] mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
           <div className="px-4 py-6 sm:px-0">
-            <div className="h-96 rounded-lg border-4 border-dashed border-gray-200">
-              Hello
+            <div className="flex justify-center">
+              <SubmitForm
+                handleSubmit={handleSubmit}
+                setInputValue={setInputValue}
+              />
             </div>
+            {url.length > 0 && (
+              <h1 className="my-4 flex justify-center">URL Accepted</h1>
+            )}
           </div>
         </div>
       </main>
