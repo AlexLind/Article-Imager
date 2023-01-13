@@ -20,7 +20,7 @@ const SubmitForm: React.FC<SubmitFormProps> = ({
             Insert URL of Article:
           </label>
           <input
-            type="text"
+            type="url"
             className="
                         form-control
                         m-0   
