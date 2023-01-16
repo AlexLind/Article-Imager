@@ -5,7 +5,7 @@ import { useSession, signOut, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import { FormEvent, useEffect, useState } from "react";
 import Navbar from "../../components/shared/Navbar";
-import { extract } from "@extractus/article-extractor";
+import { api } from "../../utils/api";
 // import Image from 'next/image'
 
 const Home: NextPage = () => {
@@ -14,6 +14,9 @@ const Home: NextPage = () => {
   const [inputValue, setInputValue] = useState("");
   const [url, setUrl] = useState("");
   const [article, setArticle] = useState({});
+  const resolvedArticle = api.articleExtractor.getArticle.useQuery({
+    text: url,
+  });
 
   useEffect(() => {
     if (!sessionData) {
@@ -22,26 +25,13 @@ const Home: NextPage = () => {
     }
   }, [sessionData, router]);
 
-  useEffect(() => {
-    if (url.length > 0) {
-      const getArticle = async () => {
-        try {
-          const data = await extract(url);
-          setArticle(data);
-          console.log(article);
-        } catch (error) {
-          console.error(error);
-        }
-      };
-      void getArticle();
-    }
-  }, [article, url]);
-
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setUrl(inputValue);
     console.log(url);
   };
+
+  console.log(resolvedArticle);
 
   return (
     <>
@@ -55,9 +45,23 @@ const Home: NextPage = () => {
                 setInputValue={setInputValue}
               />
             </div>
-            {url.length > 0 && (
-              <h1 className="my-4 flex justify-center">URL Accepted</h1>
-            )}
+            <div>
+              {url.length > 0 && (
+                <h1 className="my-4 flex justify-center">URL Accepted</h1>
+              )}
+            </div>
+            <div>
+              {resolvedArticle.data && ( // if data is available
+                <div className="flex flex-col items-center justify-center gap-4">
+                  <h1 className="text-2xl font-bold">
+                    {resolvedArticle.data.article.title}
+                  </h1>
+                  <p className="text-lg">
+                    {resolvedArticle.data.article.content}
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </main>
