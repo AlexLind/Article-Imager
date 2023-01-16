@@ -5,6 +5,7 @@ import { useSession, signOut, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import { FormEvent, useEffect, useState } from "react";
 import Navbar from "../../components/shared/Navbar";
+import { extract } from "@extractus/article-extractor";
 // import Image from 'next/image'
 
 const Home: NextPage = () => {
@@ -12,6 +13,7 @@ const Home: NextPage = () => {
   const router = useRouter();
   const [inputValue, setInputValue] = useState("");
   const [url, setUrl] = useState("");
+  const [article, setArticle] = useState({});
 
   useEffect(() => {
     if (!sessionData) {
@@ -19,6 +21,21 @@ const Home: NextPage = () => {
       return;
     }
   }, [sessionData, router]);
+
+  useEffect(() => {
+    if (url.length > 0) {
+      const getArticle = async () => {
+        try {
+          const data = await extract(url);
+          setArticle(data);
+          console.log(article);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      void getArticle();
+    }
+  }, [article, url]);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
