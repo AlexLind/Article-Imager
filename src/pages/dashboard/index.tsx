@@ -3,9 +3,11 @@ import SubmitForm from "./../../components/SubmitForm";
 import type { NextPage } from "next";
 import { useSession, signOut, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
-import { FormEvent, useEffect, useState } from "react";
+import type { FormEvent } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../../components/shared/Navbar";
 import { api } from "../../utils/api";
+import type { ArticleData } from "@extractus/article-extractor";
 // import Image from 'next/image'
 
 const Home: NextPage = () => {
@@ -13,10 +15,6 @@ const Home: NextPage = () => {
   const router = useRouter();
   const [inputValue, setInputValue] = useState("");
   const [url, setUrl] = useState("");
-  const [article, setArticle] = useState({});
-  const resolvedArticle = api.articleExtractor.getArticle.useQuery({
-    text: url,
-  });
 
   useEffect(() => {
     if (!sessionData) {
@@ -30,8 +28,6 @@ const Home: NextPage = () => {
     setUrl(inputValue);
     console.log(url);
   };
-
-  console.log(resolvedArticle);
 
   return (
     <>
@@ -50,22 +46,52 @@ const Home: NextPage = () => {
                 <h1 className="my-4 flex justify-center">URL Accepted</h1>
               )}
             </div>
-            <div>
-              {resolvedArticle.data && ( // if data is available
-                <div className="flex flex-col items-center justify-center gap-4">
-                  <h1 className="text-2xl font-bold">
-                    {resolvedArticle.data.article.title}
-                  </h1>
-                  <p className="text-lg">
-                    {resolvedArticle.data.article.content}
-                  </p>
-                </div>
-              )}
-            </div>
+            <Article url={url} />
           </div>
         </div>
       </main>
     </>
+  );
+};
+
+interface ArticleProps {
+  url: string;
+}
+
+const getArticle = (url: string) => {
+  const resolvedArticle = api.articleExtractor.getArticle.useQuery(url);
+  return resolvedArticle;
+};
+
+const Article: React.FC<ArticleProps> = ({ url }: ArticleProps) => {
+  const [article, setArticle] = useState<ArticleData>({});
+  const resolvedArticle = getArticle(url);
+
+  console.log("article is here: ", article);
+
+  useEffect(() => {
+    if (resolvedArticle === null) {
+      return;
+    }
+
+    if (
+      !resolvedArticle.isLoading &&
+      resolvedArticle.data &&
+      resolvedArticle.data.article
+    ) {
+      setArticle(resolvedArticle.data.article);
+    }
+  }, [resolvedArticle]);
+
+  return (
+    <div>
+      {article && ( // if data is available
+        <div className="flex flex-col items-center justify-center gap-4">
+          <h1 className="text-2xl font-bold">{article.title}</h1>
+          <p className="text-lg">{article.content}</p>
+        </div>
+      )}
+    </div>
   );
 };
 

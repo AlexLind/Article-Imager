@@ -6,12 +6,19 @@ import { extract } from "@extractus/article-extractor";
 export const articleExtractor = createTRPCRouter({
   /* ./src/server/api/routers/articleExtractor.ts */
 
-  getArticle: publicProcedure
-    .input(z.object({ text: z.string() }))
-    .query(async ({ input }) => {
-      const article = await extract(input.text);
+  getArticle: publicProcedure.input(z.string()).query(async ({ input }) => {
+    if (!input) {
+      return {
+        article: null,
+      };
+    }
+    try {
+      const article = await extract(input);
       return {
         article,
       };
-    }),
+    } catch (error) {
+      console.error(error);
+    }
+  }),
 });
