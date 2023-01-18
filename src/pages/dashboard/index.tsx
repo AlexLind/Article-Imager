@@ -67,8 +67,6 @@ const Article: React.FC<ArticleProps> = ({ url }: ArticleProps) => {
   const [article, setArticle] = useState<ArticleData>({});
   const resolvedArticle = getArticle(url);
 
-  console.log("article is here: ", article);
-
   useEffect(() => {
     if (resolvedArticle === null) {
       return;
