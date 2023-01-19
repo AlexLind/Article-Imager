@@ -57,10 +57,19 @@ const Home: NextPage = () => {
 interface ArticleProps {
   url: string;
 }
+interface ImagePrompt {
+  article: string;
+}
 
 const getArticle = (url: string) => {
   const resolvedArticle = api.articleExtractor.getArticle.useQuery(url);
   return resolvedArticle;
+};
+
+const getPrompt = (article: string) => {
+  const imagePrompt =
+    api.articleExtractor.getImagePromptFromArticle.useQuery(article);
+  return imagePrompt;
 };
 
 const Article: React.FC<ArticleProps> = ({ url }: ArticleProps) => {
@@ -89,6 +98,25 @@ const Article: React.FC<ArticleProps> = ({ url }: ArticleProps) => {
           <p className="text-lg">{article.content}</p>
         </div>
       )}
+      <Prompt article={article.content} />
+    </div>
+  );
+};
+
+const Prompt: React.FC<ImagePrompt> = ({ article }: ImagePrompt) => {
+  console.log(article);
+  const [prompt, setPrompt] = useState("test");
+  if (!article) {
+    return null;
+  }
+  // const resolvedPrompt = getPrompt(article);
+  // console.log(resolvedPrompt);
+
+  return (
+    <div>
+      <div className="flex flex-col items-center justify-center gap-4">
+        <h1 className="text-2xl font-bold">{prompt}</h1>
+      </div>
     </div>
   );
 };
