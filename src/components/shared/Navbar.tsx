@@ -55,7 +55,7 @@ const Navbar: FC<NavbarProps> = ({}) => {
                         <span className="sr-only">Open user menu</span>
                         <img
                           className="h-11 w-11 rounded-full"
-                          src={sessionData.user!.image!}
+                          src={sessionData.user.image}
                           alt=""
                         />
                       </Menu.Button>
