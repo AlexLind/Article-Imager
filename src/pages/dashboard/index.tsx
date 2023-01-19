@@ -101,7 +101,7 @@ const Article: React.FC<ArticleProps> = ({ url }: ArticleProps) => {
 
   return (
     <div>
-      {article && ( // if data is available
+      {article && (
         <>
           <div className="flex flex-col items-center justify-center gap-4">
             <h1 className="text-2xl font-bold">{article.title}</h1>
@@ -132,7 +132,7 @@ const Prompt: React.FC<ImagePrompt> = ({ article }: ImagePrompt) => {
 
   return (
     <div>
-      {prompt && ( // if data is available
+      {prompt && (
         <>
           <div className="flex flex-col items-center justify-center gap-4">
             {/* <h1 className="text-2xl font-bold">{prompt}</h1> */}
@@ -147,7 +147,7 @@ const Prompt: React.FC<ImagePrompt> = ({ article }: ImagePrompt) => {
 const GeneratedImage: React.FC<Image> = ({ prompt }: Image) => {
   const [imageUrl, setImageUrl] = useState("");
   const resolvedImage = getImage(prompt);
-  console.log(resolvedImage);
+  // console.log(resolvedImage);
 
   useEffect(() => {
     if (resolvedImage === null) {
@@ -169,8 +169,8 @@ const GeneratedImage: React.FC<Image> = ({ prompt }: Image) => {
         <>
           <div className="flex flex-col items-center justify-center gap-4">
             <h1 className="text-2xl font-bold">Image:</h1>
+            <img src={imageUrl} alt="Generated Image" />
           </div>
-          <img src={imageUrl} alt="Generated Image" />
         </>
       )}
     </div>
