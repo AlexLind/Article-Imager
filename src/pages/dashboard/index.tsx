@@ -47,7 +47,7 @@ const Home: NextPage = () => {
                 <h1 className="my-4 flex justify-center">URL Accepted</h1>
               )}
             </div>
-            <Article url={url} />
+            {url && url.length > 0 && <Article url={url} />}
           </div>
         </div>
       </main>
@@ -71,6 +71,8 @@ const getArticle = (url: string) => {
 };
 
 const getPrompt = (article: string) => {
+  if (!article) throw new Error("Article is undefined");
+
   const imagePrompt =
     api.articleExtractor.getImagePromptFromArticle.useQuery(article);
   return imagePrompt;
@@ -83,6 +85,7 @@ const getImage = (prompt: string) => {
 
 const Article: React.FC<ArticleProps> = ({ url }: ArticleProps) => {
   const [article, setArticle] = useState<ArticleData>({});
+  console.log("url is: ", url);
   const resolvedArticle = getArticle(url);
 
   useEffect(() => {
@@ -106,7 +109,7 @@ const Article: React.FC<ArticleProps> = ({ url }: ArticleProps) => {
           <div className="flex flex-col items-center justify-center gap-4">
             <h1 className="text-2xl font-bold">{article.title}</h1>
           </div>
-          <Prompt article={article.content} />
+          {article.content && <Prompt article={article.content} />}
         </>
       )}
     </div>
