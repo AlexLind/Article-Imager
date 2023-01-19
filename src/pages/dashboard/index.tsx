@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import SubmitForm from "./../../components/SubmitForm";
 ("use client");
 import type { NextPage } from "next";
@@ -60,6 +61,9 @@ interface ArticleProps {
 interface ImagePrompt {
   article: string;
 }
+interface Image {
+  prompt: string;
+}
 
 const getArticle = (url: string) => {
   const resolvedArticle = api.articleExtractor.getArticle.useQuery(url);
@@ -70,6 +74,11 @@ const getPrompt = (article: string) => {
   const imagePrompt =
     api.articleExtractor.getImagePromptFromArticle.useQuery(article);
   return imagePrompt;
+};
+
+const getImage = (prompt: string) => {
+  const image = api.articleExtractor.getImageFromPrompt.useQuery(prompt);
+  return image;
 };
 
 const Article: React.FC<ArticleProps> = ({ url }: ArticleProps) => {
@@ -93,30 +102,77 @@ const Article: React.FC<ArticleProps> = ({ url }: ArticleProps) => {
   return (
     <div>
       {article && ( // if data is available
-        <div className="flex flex-col items-center justify-center gap-4">
-          <h1 className="text-2xl font-bold">{article.title}</h1>
-          <p className="text-lg">{article.content}</p>
-        </div>
+        <>
+          <div className="flex flex-col items-center justify-center gap-4">
+            <h1 className="text-2xl font-bold">{article.title}</h1>
+          </div>
+          <Prompt article={article.content} />
+        </>
       )}
-      <Prompt article={article.content} />
     </div>
   );
 };
 
 const Prompt: React.FC<ImagePrompt> = ({ article }: ImagePrompt) => {
-  console.log(article);
-  const [prompt, setPrompt] = useState("test");
-  if (!article) {
-    return null;
-  }
-  // const resolvedPrompt = getPrompt(article);
-  // console.log(resolvedPrompt);
+  const [prompt, setPrompt] = useState("");
+  const resolvedPrompt = getPrompt(article);
+  useEffect(() => {
+    if (resolvedPrompt === null) {
+      return;
+    }
+
+    if (
+      !resolvedPrompt.isLoading &&
+      resolvedPrompt.data &&
+      resolvedPrompt.data.imagePrompt
+    ) {
+      setPrompt(resolvedPrompt.data.imagePrompt);
+    }
+  }, [resolvedPrompt]);
 
   return (
     <div>
-      <div className="flex flex-col items-center justify-center gap-4">
-        <h1 className="text-2xl font-bold">{prompt}</h1>
-      </div>
+      {prompt && ( // if data is available
+        <>
+          <div className="flex flex-col items-center justify-center gap-4">
+            {/* <h1 className="text-2xl font-bold">{prompt}</h1> */}
+          </div>
+          <GeneratedImage prompt={prompt} />
+        </>
+      )}
+    </div>
+  );
+};
+
+const GeneratedImage: React.FC<Image> = ({ prompt }: Image) => {
+  const [imageUrl, setImageUrl] = useState("");
+  const resolvedImage = getImage(prompt);
+  console.log(resolvedImage);
+
+  useEffect(() => {
+    if (resolvedImage === null) {
+      return;
+    }
+
+    if (
+      !resolvedImage.isLoading &&
+      resolvedImage.data &&
+      resolvedImage.data.image
+    ) {
+      setImageUrl(resolvedImage.data.image);
+    }
+  }, [resolvedImage]);
+
+  return (
+    <div>
+      {resolvedImage && ( // if data is available
+        <>
+          <div className="flex flex-col items-center justify-center gap-4">
+            <h1 className="text-2xl font-bold">Image:</h1>
+          </div>
+          <img src={imageUrl} alt="Generated Image" />
+        </>
+      )}
     </div>
   );
 };

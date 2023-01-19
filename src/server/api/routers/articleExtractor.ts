@@ -41,21 +41,39 @@ export const articleExtractor = createTRPCRouter({
       try {
         const response = await openai.createCompletion({
           model: "text-davinci-003",
-          prompt: `Create an image prompt that describes the following article: ${input}`,
+          prompt: `Create a short image prompt for AI image generation based on the following article: \n\n ${input}`,
           temperature: 0.7,
           max_tokens: 256,
           top_p: 1,
           frequency_penalty: 0,
           presence_penalty: 0,
         });
-        console.log("response: ", response);
-
-        const imagePrompt = fetch("/v1/completions");
-
-        console.log("imagePrompt: ", imagePrompt);
 
         return {
-          imagePrompt,
+          imagePrompt: response.data.choices[0].text,
+        };
+      } catch (error) {
+        console.error(error);
+      }
+    }),
+
+  getImageFromPrompt: publicProcedure
+    .input(z.string())
+    .query(async ({ input }) => {
+      if (!input) {
+        return {
+          images: null,
+        };
+      }
+      try {
+        const response = await openai.createImage({
+          prompt: input,
+          n: 1,
+          size: "1024x1024",
+        });
+
+        return {
+          image: response.data.data[0].url,
         };
       } catch (error) {
         console.error(error);
