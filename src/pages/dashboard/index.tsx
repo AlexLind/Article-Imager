@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import Navbar from "../../components/shared/Navbar";
 import { api } from "../../utils/api";
 import type { ArticleData } from "@extractus/article-extractor";
-// import Image from 'next/image'
+let imageUrlChanged = false;
 
 const Home: NextPage = () => {
   const { data: sessionData } = useSession();
@@ -26,8 +26,10 @@ const Home: NextPage = () => {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setUrl(inputValue);
-    console.log(url);
+    if (inputValue != url) {
+      setUrl(inputValue);
+      imageUrlChanged = false;
+    }
   };
 
   return (
@@ -85,15 +87,16 @@ const getImage = (prompt: string) => {
 
 const Article: React.FC<ArticleProps> = ({ url }: ArticleProps) => {
   const [article, setArticle] = useState<ArticleData>({});
-  console.log("url is: ", url);
+  const [isLoading, setIsLoading] = useState(true);
   const resolvedArticle = getArticle(url);
-  console.log("resolved article is: ", resolvedArticle);
+  if (isLoading !== resolvedArticle.isLoading) {
+    setIsLoading(resolvedArticle.isLoading);
+  }
 
   useEffect(() => {
     if (resolvedArticle === null) {
       return;
     }
-
     if (
       !resolvedArticle.isLoading &&
       resolvedArticle.data &&
@@ -101,7 +104,7 @@ const Article: React.FC<ArticleProps> = ({ url }: ArticleProps) => {
     ) {
       setArticle(resolvedArticle.data.article);
     }
-  }, [resolvedArticle]);
+  }, [isLoading]);
 
   return (
     <div>
@@ -120,6 +123,11 @@ const Article: React.FC<ArticleProps> = ({ url }: ArticleProps) => {
 const Prompt: React.FC<ImagePrompt> = ({ article }: ImagePrompt) => {
   const [prompt, setPrompt] = useState("");
   const resolvedPrompt = getPrompt(article);
+  const [isLoading, setIsLoading] = useState(true);
+  if (isLoading !== resolvedPrompt.isLoading) {
+    setIsLoading(resolvedPrompt.isLoading);
+  }
+
   useEffect(() => {
     if (resolvedPrompt === null) {
       return;
@@ -132,7 +140,7 @@ const Prompt: React.FC<ImagePrompt> = ({ article }: ImagePrompt) => {
     ) {
       setPrompt(resolvedPrompt.data.imagePrompt);
     }
-  }, [resolvedPrompt]);
+  }, [isLoading]);
 
   return (
     <div>
@@ -151,9 +159,13 @@ const Prompt: React.FC<ImagePrompt> = ({ article }: ImagePrompt) => {
 const GeneratedImage: React.FC<Image> = ({ prompt }: Image) => {
   const [imageUrl, setImageUrl] = useState("");
   const resolvedImage = getImage(prompt);
-  // console.log(resolvedImage);
+  const [isLoading, setIsLoading] = useState(true);
+  if (isLoading !== resolvedImage.isLoading) {
+    setIsLoading(resolvedImage.isLoading);
+  }
 
   useEffect(() => {
+    console.log("resolved image is: ", resolvedImage, "image is:", imageUrl);
     if (resolvedImage === null) {
       return;
     }
@@ -163,9 +175,11 @@ const GeneratedImage: React.FC<Image> = ({ prompt }: Image) => {
       resolvedImage.data &&
       resolvedImage.data.image
     ) {
+      if (imageUrlChanged) return;
       setImageUrl(resolvedImage.data.image);
+      imageUrlChanged = true;
     }
-  }, [resolvedImage]);
+  }, [isLoading]);
 
   return (
     <div>
