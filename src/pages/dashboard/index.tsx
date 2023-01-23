@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import Navbar from "../../components/shared/Navbar";
 import { api } from "../../utils/api";
 import type { ArticleData } from "@extractus/article-extractor";
+import { object, string } from "zod";
 let imageUrlChanged = false;
 
 const Home: NextPage = () => {
@@ -39,17 +40,14 @@ const Home: NextPage = () => {
         <div className="h-[calc(100% - h-16)] mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
           <div className="px-4 py-6 sm:px-0">
             <div className="flex justify-center">
-              <SubmitForm
-                handleSubmit={handleSubmit}
-                setInputValue={setInputValue}
-              />
+              {url.length === 0 ? (
+                <SubmitForm
+                  handleSubmit={handleSubmit}
+                  setInputValue={setInputValue}
+                />
+              ) : null}
             </div>
-            <div>
-              {url.length > 0 && (
-                <h1 className="my-4 flex justify-center">URL Accepted</h1>
-              )}
-            </div>
-            {url && url.length > 0 && <Article url={url} />}
+            {url && url.length > 0 && <Article url={url} setUrl={setUrl} />}
           </div>
         </div>
       </main>
@@ -59,12 +57,15 @@ const Home: NextPage = () => {
 
 interface ArticleProps {
   url: string;
+  setUrl?: (url: string) => void;
 }
 interface ImagePrompt {
   article: string;
+  setUrl?: (url: string) => void;
 }
 interface Image {
   prompt: string;
+  setUrl?: (url: string) => void;
 }
 
 const getArticle = (url: string) => {
@@ -85,7 +86,7 @@ const getImage = (prompt: string) => {
   return image;
 };
 
-const Article: React.FC<ArticleProps> = ({ url }: ArticleProps) => {
+const Article: React.FC<ArticleProps> = ({ url, setUrl }: ArticleProps) => {
   const [article, setArticle] = useState<ArticleData>({});
   const [isLoading, setIsLoading] = useState(true);
   const resolvedArticle = getArticle(url);
@@ -113,14 +114,16 @@ const Article: React.FC<ArticleProps> = ({ url }: ArticleProps) => {
           <div className="flex flex-col items-center justify-center gap-4">
             <h1 className="text-2xl font-bold">{article.title}</h1>
           </div>
-          {article.content && <Prompt article={article.content} />}
+          {article.content && (
+            <Prompt article={article.content} setUrl={setUrl} />
+          )}
         </>
       )}
     </div>
   );
 };
 
-const Prompt: React.FC<ImagePrompt> = ({ article }: ImagePrompt) => {
+const Prompt: React.FC<ImagePrompt> = ({ article, setUrl }: ImagePrompt) => {
   const [prompt, setPrompt] = useState("");
   const resolvedPrompt = getPrompt(article);
   const [isLoading, setIsLoading] = useState(true);
@@ -149,17 +152,18 @@ const Prompt: React.FC<ImagePrompt> = ({ article }: ImagePrompt) => {
           <div className="flex flex-col items-center justify-center gap-4">
             {/* <h1 className="text-2xl font-bold">{prompt}</h1> */}
           </div>
-          <GeneratedImage prompt={prompt} />
+          <GeneratedImage prompt={prompt} setUrl={setUrl} />
         </>
       )}
     </div>
   );
 };
 
-const GeneratedImage: React.FC<Image> = ({ prompt }: Image) => {
+const GeneratedImage: React.FC<Image> = ({ prompt, setUrl }: Image) => {
   const [imageUrl, setImageUrl] = useState("");
   const resolvedImage = getImage(prompt);
   const [isLoading, setIsLoading] = useState(true);
+  const mutateImage = api.db.saveImage.useMutation().mutate;
   if (isLoading !== resolvedImage.isLoading) {
     setIsLoading(resolvedImage.isLoading);
   }
@@ -181,6 +185,15 @@ const GeneratedImage: React.FC<Image> = ({ prompt }: Image) => {
     }
   }, [isLoading]);
 
+  const saveImage = () => {
+    console.log("saving image at url: ", imageUrl);
+    try {
+      mutateImage({ imageUrl });
+    } catch (error) {
+      console.log("error saving image: ", error);
+    }
+  };
+
   return (
     <div>
       {resolvedImage && ( // if data is available
@@ -188,6 +201,54 @@ const GeneratedImage: React.FC<Image> = ({ prompt }: Image) => {
           <div className="flex flex-col items-center justify-center gap-4">
             <h1 className="text-2xl font-bold">Image:</h1>
             <img src={imageUrl} alt="Generated Image" />
+            <div className="">
+              <button
+                onClick={() => void saveImage()}
+                className="
+                  mx-2
+                  rounded
+                  bg-blue-600
+                  px-6
+                  py-2.5
+                  text-xs
+                  font-medium
+                  uppercase
+                  leading-tight
+                  text-white
+                  shadow-md
+                  transition duration-150
+                  ease-in-out hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700
+                  focus:shadow-lg focus:outline-none
+                  focus:ring-0
+                  active:bg-blue-800
+                  active:shadow-lg"
+              >
+                Save Image
+              </button>
+              <button
+                onClick={() => setUrl("")}
+                className="
+                  mx-2
+                  rounded
+                  bg-blue-600
+                  px-6
+                  py-2.5
+                  text-xs
+                  font-medium
+                  uppercase
+                  leading-tight
+                  text-white
+                  shadow-md
+                  transition duration-150
+                  ease-in-out hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700
+                  focus:shadow-lg focus:outline-none
+                  focus:ring-0
+                  active:bg-blue-800
+                  active:shadow-lg"
+              >
+                Reset Image
+              </button>
+            </div>
           </div>
         </>
       )}
