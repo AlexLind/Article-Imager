@@ -1,49 +1,31 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
+import { prisma } from "../../db";
 
 export const db = createTRPCRouter({
   saveImage: protectedProcedure
     .input(
       z.object({
         imageUrl: z.string(),
+        sessionData: z.any(),
       })
     )
-    .mutation(({ ctx }) => {
-      console.log("input", ctx);
-      return { imageUrl: "test" };
-      //   const { prisma, session } = ctx;
-      //   const userId = session.user.id;
-      //   console.log("userId", userId, "input", input);
+    .mutation(async ({ input }) => {
+      const response = await prisma.userImages.create({
+        data: {
+          image: input.imageUrl,
+          title: "Test Title",
+          user: {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+            connect: { id: input.sessionData.user.id },
+          },
+        },
+      });
 
-      //   return prisma.userImages.create({
-      //     data: {
-      //       image: input.image,
-      //       title: "test",
-      //       user: {
-      //         connect: { id: "clcysd6hp0000ivzk6ajxmeq3" },
-      //       },
-      //     },
-      //   });
+      return response;
     }),
 
   //   getImages: publicProcedure.query(({ ctx }) => {
   //     return ctx.prisma.example.findMany();
   //   }),
-
-  //   login: publicProcedure
-  //     .input(
-  //       z.object({
-  //         name: z.string(),
-  //       })
-  //     )
-  //     .mutation(({ input }) => {
-  //       console.log("input", input);
-  //       // Here some login stuff would happen
-  //       return {
-  //         user: {
-  //           name: input.name,
-  //           role: "ADMIN",
-  //         },
-  //       };
-  //     }),
 });

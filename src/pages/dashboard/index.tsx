@@ -160,6 +160,7 @@ const Prompt: React.FC<ImagePrompt> = ({ article, setUrl }: ImagePrompt) => {
 };
 
 const GeneratedImage: React.FC<Image> = ({ prompt, setUrl }: Image) => {
+  const { data: sessionData } = useSession();
   const [imageUrl, setImageUrl] = useState("");
   const resolvedImage = getImage(prompt);
   const [isLoading, setIsLoading] = useState(true);
@@ -186,9 +187,8 @@ const GeneratedImage: React.FC<Image> = ({ prompt, setUrl }: Image) => {
   }, [isLoading]);
 
   const saveImage = () => {
-    console.log("saving image at url: ", imageUrl);
     try {
-      mutateImage({ imageUrl });
+      mutateImage({ imageUrl, sessionData });
     } catch (error) {
       console.log("error saving image: ", error);
     }
