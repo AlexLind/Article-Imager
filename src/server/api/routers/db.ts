@@ -26,7 +26,27 @@ export const db = createTRPCRouter({
       return response;
     }),
 
-  //   getImages: publicProcedure.query(({ ctx }) => {
-  //     return ctx.prisma.example.findMany();
-  //   }),
+  getImages: publicProcedure.input(z.string()).query(async ({ input }) => {
+    console.log(input);
+    if (!input) {
+      return {
+        images: null,
+      };
+    }
+    try {
+      const images = await prisma.userImages.findMany({
+        where: {
+          user: {
+            id: input,
+          },
+        },
+      });
+
+      return {
+        images,
+      };
+    } catch (error) {
+      console.error(error);
+    }
+  }),
 });

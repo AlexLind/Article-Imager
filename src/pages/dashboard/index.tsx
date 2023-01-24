@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import Navbar from "../../components/shared/Navbar";
 import { api } from "../../utils/api";
 import type { ArticleData } from "@extractus/article-extractor";
+import { RotatingLines } from "react-loader-spinner";
 let imageUrlChanged = false;
 
 const Home: NextPage = () => {
@@ -157,13 +158,17 @@ const Prompt: React.FC<ImagePrompt> = ({
   }, [isLoading, resolvedPrompt]);
 
   return (
-    <div>
-      {prompt && (
-        <>
-          <div className="flex flex-col items-center justify-center gap-4">
-            <GeneratedImage prompt={prompt} setUrl={setUrl} title={title} />
-          </div>
-        </>
+    <div className="flex flex-col items-center justify-center gap-4">
+      {prompt ? (
+        <GeneratedImage prompt={prompt} setUrl={setUrl} title={title} />
+      ) : (
+        <RotatingLines
+          strokeColor="grey"
+          strokeWidth="5"
+          animationDuration="0.75"
+          width="72"
+          visible={true}
+        />
       )}
     </div>
   );
@@ -210,11 +215,13 @@ const GeneratedImage: React.FC<Image> = ({ prompt, title, setUrl }: Image) => {
         <>
           <div className="flex flex-col items-center justify-center gap-4">
             <h1 className="text-2xl font-bold">Generated Image:</h1>
-            <img src={imageUrl} alt="Generated Image" />
-            <div className="">
-              <button
-                onClick={() => void saveImage()}
-                className="
+            {imageUrl ? (
+              <>
+                <img src={imageUrl} alt="Generated Image" />
+                <div>
+                  <button
+                    onClick={() => void saveImage()}
+                    className="
                   mx-2
                   rounded
                   bg-blue-600
@@ -232,12 +239,12 @@ const GeneratedImage: React.FC<Image> = ({ prompt, title, setUrl }: Image) => {
                   focus:ring-0
                   active:bg-blue-800
                   active:shadow-lg"
-              >
-                Save Image
-              </button>
-              <button
-                onClick={() => setUrl("")}
-                className="
+                  >
+                    Save Image
+                  </button>
+                  <button
+                    onClick={() => setUrl("")}
+                    className="
                   mx-2
                   rounded
                   bg-blue-600
@@ -255,10 +262,20 @@ const GeneratedImage: React.FC<Image> = ({ prompt, title, setUrl }: Image) => {
                   focus:ring-0
                   active:bg-blue-800
                   active:shadow-lg"
-              >
-                Reset Image
-              </button>
-            </div>
+                  >
+                    Reset Image
+                  </button>
+                </div>
+              </>
+            ) : (
+              <RotatingLines
+                strokeColor="grey"
+                strokeWidth="5"
+                animationDuration="0.75"
+                width="48"
+                visible={true}
+              />
+            )}
           </div>
         </>
       )}
