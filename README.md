@@ -2,7 +2,7 @@
 
 Article Imager is an open-source app that generates relevant images when given an article URL using the DALL-E 2 engine. This app is built to simplify the process of finding images for articles, thus saving time and effort for content creators.
 
-#Features
+# Features
 
 - Generates relevant images for articles using DALL-E 2
 - User-friendly interface
