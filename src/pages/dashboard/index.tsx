@@ -2,14 +2,13 @@
 import SubmitForm from "./../../components/SubmitForm";
 ("use client");
 import type { NextPage } from "next";
-import { useSession, signOut, signIn } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import type { FormEvent } from "react";
 import { useEffect, useState } from "react";
 import Navbar from "../../components/shared/Navbar";
 import { api } from "../../utils/api";
 import type { ArticleData } from "@extractus/article-extractor";
-import { object, string } from "zod";
 let imageUrlChanged = false;
 
 const Home: NextPage = () => {
@@ -62,10 +61,12 @@ interface ArticleProps {
 interface ImagePrompt {
   article: string;
   setUrl?: (url: string) => void;
+  title: string;
 }
 interface Image {
   prompt: string;
   setUrl?: (url: string) => void;
+  title: string;
 }
 
 const getArticle = (url: string) => {
@@ -105,17 +106,23 @@ const Article: React.FC<ArticleProps> = ({ url, setUrl }: ArticleProps) => {
     ) {
       setArticle(resolvedArticle.data.article);
     }
-  }, [isLoading]);
+  }, [isLoading, resolvedArticle]);
 
   return (
     <div>
       {article && (
         <>
           <div className="flex flex-col items-center justify-center gap-4">
-            <h1 className="text-2xl font-bold">{article.title}</h1>
+            <h1 className="text-3xl font-bold">{article.title}</h1>
+            <h3 className="text-l font-semibold italic">{article.url}</h3>
+            <br />
           </div>
           {article.content && (
-            <Prompt article={article.content} setUrl={setUrl} />
+            <Prompt
+              article={article.content}
+              setUrl={setUrl}
+              title={article.title}
+            />
           )}
         </>
       )}
@@ -123,7 +130,11 @@ const Article: React.FC<ArticleProps> = ({ url, setUrl }: ArticleProps) => {
   );
 };
 
-const Prompt: React.FC<ImagePrompt> = ({ article, setUrl }: ImagePrompt) => {
+const Prompt: React.FC<ImagePrompt> = ({
+  article,
+  title,
+  setUrl,
+}: ImagePrompt) => {
   const [prompt, setPrompt] = useState("");
   const resolvedPrompt = getPrompt(article);
   const [isLoading, setIsLoading] = useState(true);
@@ -143,23 +154,22 @@ const Prompt: React.FC<ImagePrompt> = ({ article, setUrl }: ImagePrompt) => {
     ) {
       setPrompt(resolvedPrompt.data.imagePrompt);
     }
-  }, [isLoading]);
+  }, [isLoading, resolvedPrompt]);
 
   return (
     <div>
       {prompt && (
         <>
           <div className="flex flex-col items-center justify-center gap-4">
-            {/* <h1 className="text-2xl font-bold">{prompt}</h1> */}
+            <GeneratedImage prompt={prompt} setUrl={setUrl} title={title} />
           </div>
-          <GeneratedImage prompt={prompt} setUrl={setUrl} />
         </>
       )}
     </div>
   );
 };
 
-const GeneratedImage: React.FC<Image> = ({ prompt, setUrl }: Image) => {
+const GeneratedImage: React.FC<Image> = ({ prompt, title, setUrl }: Image) => {
   const { data: sessionData } = useSession();
   const [imageUrl, setImageUrl] = useState("");
   const resolvedImage = getImage(prompt);
@@ -170,7 +180,6 @@ const GeneratedImage: React.FC<Image> = ({ prompt, setUrl }: Image) => {
   }
 
   useEffect(() => {
-    console.log("resolved image is: ", resolvedImage, "image is:", imageUrl);
     if (resolvedImage === null) {
       return;
     }
@@ -184,11 +193,12 @@ const GeneratedImage: React.FC<Image> = ({ prompt, setUrl }: Image) => {
       setImageUrl(resolvedImage.data.image);
       imageUrlChanged = true;
     }
-  }, [isLoading]);
+  }, [isLoading, resolvedImage, imageUrl]);
 
   const saveImage = () => {
     try {
-      mutateImage({ imageUrl, sessionData });
+      mutateImage({ imageUrl, title, sessionData });
+      setUrl("");
     } catch (error) {
       console.log("error saving image: ", error);
     }
@@ -199,7 +209,7 @@ const GeneratedImage: React.FC<Image> = ({ prompt, setUrl }: Image) => {
       {resolvedImage && ( // if data is available
         <>
           <div className="flex flex-col items-center justify-center gap-4">
-            <h1 className="text-2xl font-bold">Image:</h1>
+            <h1 className="text-2xl font-bold">Generated Image:</h1>
             <img src={imageUrl} alt="Generated Image" />
             <div className="">
               <button

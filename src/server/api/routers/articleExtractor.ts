@@ -39,19 +39,19 @@ export const articleExtractor = createTRPCRouter({
         };
       }
       try {
-        // const response = await openai.createCompletion({
-        //   model: "text-davinci-003",
-        //   prompt: `Create a short image prompt for AI image generation based on the following article: \n\n ${input}`,
-        //   temperature: 0.7,
-        //   max_tokens: 256,
-        //   top_p: 1,
-        //   frequency_penalty: 0,
-        //   presence_penalty: 0,
-        // });
+        const response = await openai.createCompletion({
+          model: "text-davinci-003",
+          prompt: `Create a short image prompt for AI image generation based on the following article: \n\n ${input}`,
+          temperature: 0.7,
+          max_tokens: 256,
+          top_p: 1,
+          frequency_penalty: 0,
+          presence_penalty: 0,
+        });
 
         return {
-          // imagePrompt: response.data.choices[0].text,
-          imagePrompt: "test",
+          imagePrompt: response.data.choices[0].text,
+          // imagePrompt: "test",
         };
       } catch (error) {
         console.error(error);
@@ -67,15 +67,15 @@ export const articleExtractor = createTRPCRouter({
         };
       }
       try {
-        // const response = await openai.createImage({
-        //   prompt: input,
-        //   n: 1,
-        //   size: "512x512",
-        // });
+        const response = await openai.createImage({
+          prompt: input,
+          n: 1,
+          size: "512x512",
+        });
 
         return {
-          // image: response.data.data[0].url,
-          image: "https://thumbs.dreamstime.com/b/toad-27178162.jpg",
+          image: response.data.data[0].url,
+          // image: "https://thumbs.dreamstime.com/b/toad-27178162.jpg",
         };
       } catch (error) {
         console.error(error);

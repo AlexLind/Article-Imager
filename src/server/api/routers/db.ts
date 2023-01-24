@@ -7,6 +7,7 @@ export const db = createTRPCRouter({
     .input(
       z.object({
         imageUrl: z.string(),
+        title: z.string(),
         sessionData: z.any(),
       })
     )
@@ -14,7 +15,7 @@ export const db = createTRPCRouter({
       const response = await prisma.userImages.create({
         data: {
           image: input.imageUrl,
-          title: "Test Title",
+          title: input.title,
           user: {
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
             connect: { id: input.sessionData.user.id },
