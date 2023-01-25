@@ -61,11 +61,13 @@ interface ArticleProps {
 }
 interface ImagePrompt {
   article: string;
+  articleUrl: string;
   setUrl?: (url: string) => void;
   title: string;
 }
 interface Image {
   prompt: string;
+  articleUrl: string;
   setUrl?: (url: string) => void;
   title: string;
 }
@@ -121,6 +123,7 @@ const Article: React.FC<ArticleProps> = ({ url, setUrl }: ArticleProps) => {
           {article.content && (
             <Prompt
               article={article.content}
+              articleUrl={article.url}
               setUrl={setUrl}
               title={article.title}
             />
@@ -133,6 +136,7 @@ const Article: React.FC<ArticleProps> = ({ url, setUrl }: ArticleProps) => {
 
 const Prompt: React.FC<ImagePrompt> = ({
   article,
+  articleUrl,
   title,
   setUrl,
 }: ImagePrompt) => {
@@ -160,7 +164,12 @@ const Prompt: React.FC<ImagePrompt> = ({
   return (
     <div className="flex flex-col items-center justify-center gap-4">
       {prompt ? (
-        <GeneratedImage prompt={prompt} setUrl={setUrl} title={title} />
+        <GeneratedImage
+          prompt={prompt}
+          setUrl={setUrl}
+          title={title}
+          articleUrl={articleUrl}
+        />
       ) : (
         <RotatingLines
           strokeColor="grey"
@@ -174,7 +183,12 @@ const Prompt: React.FC<ImagePrompt> = ({
   );
 };
 
-const GeneratedImage: React.FC<Image> = ({ prompt, title, setUrl }: Image) => {
+const GeneratedImage: React.FC<Image> = ({
+  prompt,
+  title,
+  articleUrl,
+  setUrl,
+}: Image) => {
   const { data: sessionData } = useSession();
   const [imageUrl, setImageUrl] = useState("");
   const resolvedImage = getImage(prompt);
@@ -202,7 +216,7 @@ const GeneratedImage: React.FC<Image> = ({ prompt, title, setUrl }: Image) => {
 
   const saveImage = () => {
     try {
-      mutateImage({ imageUrl, title, sessionData });
+      mutateImage({ imageUrl, articleUrl, title, sessionData });
       setUrl("");
     } catch (error) {
       console.log("error saving image: ", error);

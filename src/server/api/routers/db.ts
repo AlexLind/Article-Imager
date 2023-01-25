@@ -7,6 +7,7 @@ export const db = createTRPCRouter({
     .input(
       z.object({
         imageUrl: z.string(),
+        articleUrl: z.string(),
         title: z.string(),
         sessionData: z.any(),
       })
@@ -16,10 +17,27 @@ export const db = createTRPCRouter({
         data: {
           image: input.imageUrl,
           title: input.title,
+          articleUrl: input.articleUrl,
           user: {
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
             connect: { id: input.sessionData.user.id },
           },
+        },
+      });
+
+      return response;
+    }),
+
+  deleteImage: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const response = await prisma.userImages.delete({
+        where: {
+          id: input.id,
         },
       });
 
