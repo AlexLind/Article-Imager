@@ -55,6 +55,7 @@ export const articleExtractor = createTRPCRouter({
         };
       } catch (error) {
         console.error(error);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         console.log(error?.config?.headers);
         return { imagePrompt: null };
       }
