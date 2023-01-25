@@ -36,7 +36,7 @@ const Home: NextPage = () => {
   return (
     <>
       <Navbar />
-      <main>
+      <main className="min-h-screen bg-neutral-100">
         <div className="h-[calc(100% - h-16)] mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
           <div className="px-4 py-6 sm:px-0">
             <div className="flex justify-center">
@@ -172,7 +172,7 @@ const Prompt: React.FC<ImagePrompt> = ({
         />
       ) : (
         <RotatingLines
-          strokeColor="grey"
+          strokeColor="black"
           strokeWidth="5"
           animationDuration="0.75"
           width="72"
@@ -228,30 +228,35 @@ const GeneratedImage: React.FC<Image> = ({
       {resolvedImage && ( // if data is available
         <>
           <div className="flex flex-col items-center justify-center gap-4">
-            <h1 className="text-2xl font-bold">Generated Image:</h1>
+            <h1 className="text-2xl font-bold">
+              Generated <span className="text-teal-400">Image</span>:
+            </h1>
             {imageUrl ? (
               <>
-                <img src={imageUrl} alt="Generated Image" />
+                <img
+                  src={imageUrl}
+                  alt="Generated Image"
+                  className="rounded-lg"
+                />
                 <div>
                   <button
                     onClick={() => void saveImage()}
                     className="
+                    duration-350
+                  hover:border-1
                   mx-2
                   rounded
-                  bg-blue-600
+                  bg-white
                   px-6
                   py-2.5
-                  text-xs
+                  text-sm
                   font-medium
                   uppercase
                   leading-tight
-                  text-white
-                  shadow-md
-                  transition duration-150
-                  ease-in-out hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700
+                  text-black shadow-md
+                  transition ease-in-out hover:shadow-lg
                   focus:shadow-lg focus:outline-none
                   focus:ring-0
-                  active:bg-blue-800
                   active:shadow-lg"
                   >
                     Save Image
@@ -259,23 +264,21 @@ const GeneratedImage: React.FC<Image> = ({
                   <button
                     onClick={() => setUrl("")}
                     className="
-                  mx-2
-                  rounded
-                  bg-blue-600
-                  px-6
-                  py-2.5
-                  text-xs
-                  font-medium
-                  uppercase
-                  leading-tight
-                  text-white
-                  shadow-md
-                  transition duration-150
-                  ease-in-out hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700
-                  focus:shadow-lg focus:outline-none
-                  focus:ring-0
-                  active:bg-blue-800
-                  active:shadow-lg"
+                    duration-350
+                    hover:border-1
+                    rounded
+                    bg-white
+                    px-6
+                    py-2.5
+                    text-sm
+                    font-medium
+                    uppercase
+                    leading-tight
+                    text-black shadow-md
+                    transition ease-in-out hover:shadow-lg
+                    focus:shadow-lg focus:outline-none
+                    focus:ring-0
+                    active:shadow-lg"
                   >
                     Reset Image
                   </button>
@@ -283,7 +286,7 @@ const GeneratedImage: React.FC<Image> = ({
               </>
             ) : (
               <RotatingLines
-                strokeColor="grey"
+                strokeColor="black"
                 strokeWidth="5"
                 animationDuration="0.75"
                 width="48"

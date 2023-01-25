@@ -10,33 +10,32 @@ const SubmitForm: React.FC<SubmitFormProps> = ({
   setInputValue,
 }: SubmitFormProps) => {
   return (
-    <form onSubmit={(event) => handleSubmit(event)}>
+    <form onSubmit={(event) => handleSubmit(event)} className="w-96">
       <div className="form-group mb-6">
-        <div className="mb-3 xl:w-96">
+        <div className="mb-3 xl:w-max">
           <label
             htmlFor="exampleFormControlInput1"
-            className="form-label mb-2 inline-block font-semibold text-gray-700"
+            className="form-label mb-2 inline-block font-semibold text-black"
           >
-            Insert URL of Article:
+            Insert URL of <span className="text-teal-400">Article </span>:
           </label>
           <input
             type="url"
             className="
-                        form-control
-                        m-0   
+                        form-control 
+                        m-0
                         block
                         w-full
                         rounded
                         border
                         border-solid
-                        border-gray-300
-                        bg-white bg-clip-padding
-                        px-3 py-1.5 text-base
+                        border-black bg-white
+                        bg-clip-padding px-3 py-1.5
+                        text-base
                         font-normal
-                        text-gray-700
+                        text-neutral-100
                         transition
-                        ease-in-out
-                        focus:border-blue-600 focus:bg-white focus:text-gray-700 focus:outline-none
+                        ease-in-out focus:border-teal-400 focus:bg-white focus:outline-none
                         "
             id="exampleFormControlInput1"
             placeholder="Insert URL here"
@@ -47,21 +46,20 @@ const SubmitForm: React.FC<SubmitFormProps> = ({
       <button
         type="submit"
         className="
+                  duration-350
+                  hover:border-1
                   rounded
-                  bg-blue-600
+                  bg-white
                   px-6
                   py-2.5
-                  text-xs
+                  text-sm
                   font-medium
                   uppercase
                   leading-tight
-                  text-white
-                  shadow-md
-                  transition duration-150
-                  ease-in-out hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700
+                  text-black shadow-md
+                  transition ease-in-out hover:shadow-lg
                   focus:shadow-lg focus:outline-none
                   focus:ring-0
-                  active:bg-blue-800
                   active:shadow-lg"
       >
         Submit
