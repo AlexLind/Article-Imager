@@ -12,7 +12,7 @@ const SubmitForm: React.FC<SubmitFormProps> = ({
   return (
     <form onSubmit={(event) => handleSubmit(event)} className="w-96">
       <div className="form-group mb-6">
-        <div className="mb-3 xl:w-max">
+        <div className="center mb-3">
           <label
             htmlFor="exampleFormControlInput1"
             className="form-label mb-2 inline-block font-semibold text-black"

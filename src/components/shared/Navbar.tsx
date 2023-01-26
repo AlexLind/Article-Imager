@@ -17,7 +17,7 @@ const Navbar: FC<NavbarProps> = ({}) => {
   const { data: sessionData } = useSession();
 
   return (
-    <Disclosure as="nav" className="h-16 bg-neutral-100">
+    <Disclosure as="nav" className="h-16 bg-neutral-300">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
