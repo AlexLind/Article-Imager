@@ -48,4 +48,4 @@ We welcome contributions to Article Imager. If you're interested in contributing
 Article Imager is licensed under the [MIT License](https://github.com/AlexLind/Article-Imager/blob/main/MIT-License.md).
 
 # Contact
-If you have any questions or suggestions, feel free to contact us at email or open an issue on GitHub.
+If you have any questions or suggestions, feel free to contact us at email or [open an issue](https://github.com/AlexLind/Article-Imager/issues/new) on GitHub.
