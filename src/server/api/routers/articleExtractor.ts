@@ -51,7 +51,6 @@ export const articleExtractor = createTRPCRouter({
 
         return {
           imagePrompt: response.data.choices[0].text,
-          // imagePrompt: "test",
         };
       } catch (error) {
         console.error(error);
@@ -78,7 +77,6 @@ export const articleExtractor = createTRPCRouter({
 
         return {
           image: response.data.data[0].url,
-          // image: "https://thumbs.dreamstime.com/b/toad-27178162.jpg",
         };
       } catch (error) {
         console.error(error);

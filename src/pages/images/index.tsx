@@ -17,7 +17,6 @@ const YourImages: NextPage = () => {
       void utils.db.getImages.invalidate();
     },
   }).mutate;
-  // const queryClient = useQueryClient();
 
   useEffect(() => {
     if (!sessionData) {
@@ -31,7 +30,6 @@ const YourImages: NextPage = () => {
     try {
       deleteImage({ id: id });
       setRefreshCount(refreshCount + 1);
-      // RERENDER PAGE HERE
     } catch (error) {
       console.log("error deleting image: ", error);
     }
@@ -71,9 +69,7 @@ const YourImages: NextPage = () => {
                                 {image.title}
                               </h5>
                             </a>
-                            {/* <div> Image title </div> */}
                             <div className="flex-1"></div>
-                            {/* <div> Image description </div> */}
                             <p className="mb-3 text-center font-semibold text-black dark:text-gray-400">
                               Article found at URL:
                               <br />
