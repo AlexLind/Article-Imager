@@ -42,10 +42,10 @@ You can set these environment variables in a .env file in the root of the projec
 Once you have set the environment variables, you can start the app by running npm start in the project directory.
 
 # Contributing
-We welcome contributions to Article Imager. If you're interested in contributing, please take a look at our CONTRIBUTING.md file for more information.
+We welcome contributions to Article Imager. If you're interested in contributing, please take a look at our [CONTRIBUTING.md](https://github.com/AlexLind/Article-Imager/blob/main/CONTRIBUTIONS.md) file for more information.
 
 # Licence
-Article Imager is licensed under the MIT License.
+Article Imager is licensed under the [MIT License](https://github.com/AlexLind/Article-Imager/blob/main/MIT-License.md).
 
 # Contact
 If you have any questions or suggestions, feel free to contact us at email or open an issue on GitHub.
