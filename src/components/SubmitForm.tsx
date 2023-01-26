@@ -33,7 +33,7 @@ const SubmitForm: React.FC<SubmitFormProps> = ({
                         bg-clip-padding px-3 py-1.5
                         text-base
                         font-normal
-                        text-neutral-100
+                        text-black
                         transition
                         ease-in-out focus:border-teal-400 focus:bg-white focus:outline-none
                         "
