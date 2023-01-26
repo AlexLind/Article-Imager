@@ -41,7 +41,7 @@ const YourImages: NextPage = () => {
   return (
     <>
       <Navbar />
-      <main className="bg-neutral-100">
+      <main className="min-h-screen bg-neutral-100">
         <input type="hidden" value={refreshCount}></input>
         <div className="h-[calc(100% - h-16)] mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
           <div className="px-4 py-6 sm:px-0">
