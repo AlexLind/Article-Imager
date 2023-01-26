@@ -15,7 +15,7 @@ For usage instructions, please refer to the project's documentation on GitHub.
 
 To install the dependencies for Article Imager, you will need to have Node.js and npm installed on your machine.
 
-1. Clone the repository to your local machine using git clone https://github.com/yourusername/Article-Imager.git
+1. Clone the repository to your local machine using `git clone https://github.com/yourusername/Article-Imager.git`
 2. Navigate to the project directory using `cd Article-Imager`
 3. Run `npm install` in your command line to install all the necessary dependencies.
 4. Run `npm run dev` to start up the application in development mode.
@@ -27,7 +27,7 @@ Article Imager uses a database to store user information and the OpenAI API to g
 
 `NEXTAUTH_SECRET`: A secret used for Next Auth, which is used for user authentication. You can generate the secret via 'openssl rand -base64 32' on Linux.
 
-`NEXTAUTH_URL`: The URL for Next Auth, which is used for user authentication. Use http://localhost:[Port] in development mode, and the deployed url when deployed.
+`NEXTAUTH_URL`: The URL for Next Auth, which is used for user authentication. Use `http://localhost:[Port]` in development mode, and the deployed url when deployed.
 
 `DISCORD_CLIENT_ID`: The application client ID for the Discord Provider, which is used for user authentication. To create a new discord application, navigate [here](https://discord.com/developers/applications).
 
