@@ -4,8 +4,6 @@ import Head from "next/head";
 // import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { api } from "../utils/api";
-import Navbar from "../components/shared/Navbar";
 
 const Home: NextPage = () => {
   const { data: sessionData } = useSession();
@@ -41,7 +39,7 @@ const Home: NextPage = () => {
               {" "}
               The first <span className="text-teal-400">
                 {" "}
-                license free{" "}
+                copyright free{" "}
               </span>{" "}
               automated image generator for online articles{" "}
             </p>

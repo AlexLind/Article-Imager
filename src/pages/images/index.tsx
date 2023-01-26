@@ -5,7 +5,6 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Navbar from "../../components/shared/Navbar";
 import { api } from "../../utils/api";
-import { useQueryClient } from "@tanstack/react-query";
 
 const YourImages: NextPage = () => {
   const { data: sessionData } = useSession();
@@ -87,10 +86,10 @@ const YourImages: NextPage = () => {
                                 {image.articleUrl}
                               </a>
                             </p>
-                            <div className="bottom-0 space-x-16">
+                            <div className="bottom-0 space-x-10">
                               <a
                                 href="#"
-                                className="mx-2 inline-flex rounded-lg border bg-white px-3 py-2 text-center text-sm font-medium text-black hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-blue-800"
+                                className="mx-3 inline-flex rounded-lg border bg-white px-3 py-2 text-center text-sm font-medium text-black hover:bg-gray-100 focus:outline-none focus:ring-4 dark:bg-gray-700 dark:hover:bg-gray-600"
                                 onClick={() => void handleDelete(image.id)}
                               >
                                 Delete Image
@@ -98,7 +97,7 @@ const YourImages: NextPage = () => {
                               <a
                                 href={image.image}
                                 target="_blank"
-                                className="mx-2 inline-flex rounded-lg border bg-white px-3 py-2 text-center text-sm font-medium text-black hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-blue-800"
+                                className="mx-3  rounded-lg border bg-white px-3 py-2 text-center text-sm font-medium text-black hover:bg-gray-100 focus:outline-none focus:ring-4 dark:bg-gray-700 dark:hover:bg-gray-600"
                                 rel="noreferrer"
                               >
                                 Open In New Tab

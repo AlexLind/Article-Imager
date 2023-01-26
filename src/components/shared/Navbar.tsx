@@ -36,11 +36,6 @@ const Navbar: FC<NavbarProps> = ({}) => {
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
                   <Link href="/">
-                    {/* <img
-                      className="block h-14 w-auto lg:hidden"
-                      src="https://svgshare.com/i/pe5.svg"
-                      alt="Your Company"
-                    /> */}
                     <img
                       alt="Article Imager Logo"
                       className="block h-14 w-auto lg:hidden"

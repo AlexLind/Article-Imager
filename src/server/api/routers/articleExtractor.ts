@@ -1,7 +1,7 @@
 import { z } from "zod";
 
-import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
-import { extract, extractFromHtml } from "@extractus/article-extractor";
+import { createTRPCRouter, publicProcedure } from "../trpc";
+import { extract } from "@extractus/article-extractor";
 import { Configuration, OpenAIApi } from "openai";
 
 const configuration = new Configuration({
