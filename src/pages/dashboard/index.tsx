@@ -36,10 +36,10 @@ const Home: NextPage = () => {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-neutral-100">
+      <main className="grid min-h-screen place-items-center bg-neutral-100">
         <div className="h-[calc(100% - h-16)] mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
           <div className="px-4 py-6 sm:px-0">
-            <div className="flex justify-center">
+            <div className="flex -translate-y-16 justify-center">
               {url.length === 0 ? (
                 <SubmitForm
                   handleSubmit={handleSubmit}
