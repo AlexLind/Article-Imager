@@ -1,9 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 import { type NextPage } from "next";
 import Head from "next/head";
-// import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import GitHubButton from "react-github-btn";
 
 const Home: NextPage = () => {
   const { data: sessionData } = useSession();
@@ -78,6 +78,15 @@ const AuthShowcase: React.FC = () => {
       >
         {sessionData ? "Sign out" : "Sign in"}
       </button>
+      <div className="translate-y-12">
+        <GitHubButton
+          href="https://github.com/AlexLind"
+          data-color-scheme="no-preference: dark; light: dark; dark: dark;"
+          aria-label="Follow @AlexLind on GitHub"
+        >
+          Follow @AlexLind
+        </GitHubButton>
+      </div>
     </div>
   );
 };
