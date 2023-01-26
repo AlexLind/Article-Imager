@@ -16,7 +16,7 @@ For usage instructions, please refer to the project's documentation on GitHub.
 To install the dependencies for Article Imager, you will need to have Node.js and npm installed on your machine.
 
 1. Clone the repository to your local machine using git clone https://github.com/yourusername/Article-Imager.git
-2. Navigate to the project directory using ´cd Article-Imager`
+2. Navigate to the project directory using `cd Article-Imager`
 3. Run `npm install` in your command line to install all the necessary dependencies.
 4. Run `npm run dev` to start up the application in development mode.
 
