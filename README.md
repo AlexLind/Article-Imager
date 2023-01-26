@@ -17,7 +17,7 @@ For usage instructions, please refer to the project's documentation on GitHub.
 
 To install the dependencies for Article Imager, you will need to have Node.js and npm installed on your machine.
 
-1. Clone the repository to your local machine using `git clone https://github.com/yourusername/Article-Imager.git`
+1. Clone the repository to your local machine using `git clone git@github.com:AlexLind/Article-Imager.git`
 2. Navigate to the project directory using `cd Article-Imager`
 3. Run `npm install` in your command line to install all the necessary dependencies.
 4. Run `npm run dev` to start up the application in development mode.
@@ -42,10 +42,10 @@ You can set these environment variables in a .env file in the root of the projec
 Once you have set the environment variables, you can start the app by running npm start in the project directory.
 
 # Contributing
-We welcome contributions to Article Imager. If you're interested in contributing, please take a look at our [CONTRIBUTING.md](https://github.com/AlexLind/Article-Imager/blob/main/CONTRIBUTIONS.md) file for more information.
+We welcome contributions to Article Imager. If you're interested in contributing, please take a look at our [CONTRIBUTING.md](https://github.com/AlexLind/Article-Imager/blob/main/CONTRIBUTING.md) file for more information.
 
 # Licence
-Article Imager is licensed under the [MIT License](https://github.com/AlexLind/Article-Imager/blob/main/MIT-License.md).
+Article Imager is licensed under the [MIT License](https://github.com/AlexLind/Article-Imager/blob/main/LICENSE.md).
 
 # Contact
 If you have any questions or suggestions, feel free to contact us at email or [open an issue](https://github.com/AlexLind/Article-Imager/issues/new) on GitHub.
