@@ -18,12 +18,12 @@ const Home: NextPage = () => {
   const [inputValue, setInputValue] = useState("");
   const [url, setUrl] = useState("");
 
-  useEffect(() => {
-    if (!sessionData) {
-      void router.push("/");
-      return;
-    }
-  }, [sessionData, router]);
+  // useEffect(() => {
+  //   if (!sessionData) {
+  //     void router.push("/");
+  //     return;
+  //   }
+  // }, [sessionData, router]);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();

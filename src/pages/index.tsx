@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import GitHubButton from "react-github-btn";
 
 const Home: NextPage = () => {
-  const { data: sessionData } = useSession();
+  let { data: sessionData } = useSession();
 
   const router = useRouter();
 
@@ -66,18 +66,27 @@ export default Home;
 
 const AuthShowcase: React.FC = () => {
   const { data: sessionData } = useSession();
+  const router = useRouter();
 
   return (
     <div className="flex flex-col items-center justify-center gap-4">
       <p className="text-center text-2xl text-white">
         {sessionData && <span>Logged in as {sessionData.user?.name}</span>}
       </p>
-      <button
-        className="transform rounded-full bg-black px-10 py-3 font-semibold text-white no-underline transition duration-200 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-gray-800 hover:shadow-lg"
-        onClick={sessionData ? () => void signOut() : () => void signIn()}
-      >
-        {sessionData ? "Sign out" : "Sign in"}
-      </button>
+      <div className="flex flex-row items-center justify-center gap-4">
+        <button
+          className="transform rounded-full bg-black px-10 py-3 font-semibold text-white no-underline transition duration-200 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-gray-800 hover:shadow-lg"
+          onClick={sessionData ? () => void signOut() : () => void signIn()}
+        >
+          {sessionData ? "Sign out" : "Sign in"}
+        </button>
+        <button
+          className="transform rounded-full bg-black px-10 py-3 font-semibold text-white no-underline transition duration-200 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-gray-800 hover:shadow-lg"
+          onClick={() => void router.push("/dashboard")}
+        >
+          Demo
+        </button>
+      </div>
       <div className="translate-y-12">
         <GitHubButton
           href="https://github.com/AlexLind"
