@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import GitHubButton from "react-github-btn";
 
 const Home: NextPage = () => {
-  let { data: sessionData } = useSession();
+  const { data: sessionData } = useSession();
 
   const router = useRouter();
 
